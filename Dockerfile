@@ -3,11 +3,12 @@ LABEL maintainer="Peter Stalman <sarkedev@gmail.com>"
 ENV DEBIAN_FRONTEND noninteractive
 
 # Following 'How do I add or remove Dropbox from my Linux repository?' - https://www.dropbox.com/en/help/246
-RUN echo 'deb http://linux.dropbox.com/ubuntu bionic main' > /etc/apt/sources.list.d/dropbox.list \
-	&& apt-get -qqy update \
+RUN apt-get -qqy update \
 	# Note 'ca-certificates' dependency is required for 'dropbox start -i' to succeed
 	&& apt-get -qqy install curl libatomic1 ca-certificates python3-gpg \
 	&& apt-key adv --keyserver pgp.key-server.io --recv-keys 1C61A2656FB57B7E4DE0F4C1FC918B335044912E \
+	&& echo 'deb http://linux.dropbox.com/ubuntu bionic main' > /etc/apt/sources.list.d/dropbox.list \
+	&& apt-get -qqy update \
 	&& apt-get -qqy install dropbox \
 	# Perform image clean up.
 	&& apt-get -qqy autoclean \
