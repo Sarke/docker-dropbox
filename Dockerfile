@@ -1,6 +1,7 @@
 FROM ubuntu:bionic
 LABEL maintainer="Peter Stalman <sarkedev@gmail.com>"
 ENV DEBIAN_FRONTEND noninteractive
+ENV LANG C.UTF-8
 
 # Following 'How do I add or remove Dropbox from my Linux repository?' - https://www.dropbox.com/en/help/246
 RUN apt-get -qqy update \
