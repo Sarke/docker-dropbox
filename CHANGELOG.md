@@ -1,4 +1,9 @@
 
+## 2020-02-20
+
+### Added
+- Added `$DBOX_SKIP_CHOWN`.
+
 ## 2019-11-19
 
 ### Added

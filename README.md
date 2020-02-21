@@ -67,6 +67,9 @@ Run Dropbox with a custom group id (matching the group of the mounted files)
 Default: `False`  
 Set this to `True` to skip updating to the latest Dropbox version on container start
 
+**$DBOX_SKIP_CHOWN**
+Default: `False`  
+Set this to `True` to skip `chown` and `chmod` on startup.
 
 ## Exposed volumes
 

@@ -24,11 +24,13 @@ fi
 # Set dropbox account's UID.
 usermod -u $DBOX_UID -g $DBOX_GID --non-unique dropbox > /dev/null 2>&1
 
-# Change ownership to dropbox account on all working folders.
-chown -R $DBOX_UID:$DBOX_GID /dbox
+if [[ -z "$DBOX_SKIP_CHOWN" ]]; then
+	# Change ownership to dropbox account on all working folders.
+	chown -R $DBOX_UID:$DBOX_GID /dbox
 
-# Change permissions on Dropbox folder
-chmod 755 /dbox/Dropbox
+	# Change permissions on Dropbox folder
+	chmod 755 /dbox/Dropbox
+fi
 
 #  Dropbox did not shutdown properly? Remove files.
 [ ! -e "/dbox/.dropbox/command_socket" ] || rm /dbox/.dropbox/command_socket
