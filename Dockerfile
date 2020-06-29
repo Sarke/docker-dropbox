@@ -1,14 +1,23 @@
-FROM ubuntu:bionic
+FROM ubuntu:focal
 LABEL maintainer="Peter Stalman <sarkedev@gmail.com>"
 ENV DEBIAN_FRONTEND noninteractive
 ENV LANG C.UTF-8
+# apt-key always wants to warn when it's not a terminal
+ARG APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1
+
+# It just speeds up builds by doing the key in a separate layer
+RUN apt-get -qqy update \
+	&& apt-get -qqy install gnupg \
+	&& apt-key adv -o Acquire::ForceIPv4=true --keyserver pgp.key-server.io --recv-keys 1C61A2656FB57B7E4DE0F4C1FC918B335044912E \
+	# Perform image clean up.
+	&& apt-get -qqy autoclean \
+	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Following 'How do I add or remove Dropbox from my Linux repository?' - https://www.dropbox.com/en/help/246
 RUN apt-get -qqy update \
 	# Note 'ca-certificates' dependency is required for 'dropbox start -i' to succeed
-	&& apt-get -qqy install curl libatomic1 ca-certificates python3-gpg \
-	&& apt-key adv --keyserver pgp.key-server.io --recv-keys 1C61A2656FB57B7E4DE0F4C1FC918B335044912E \
-	&& echo 'deb http://linux.dropbox.com/ubuntu bionic main' > /etc/apt/sources.list.d/dropbox.list \
+	&& apt-get -qqy install curl ca-certificates python3-gpg libatomic1 libgl1-mesa-dev \
+	&& echo 'deb http://linux.dropbox.com/ubuntu disco main' > /etc/apt/sources.list.d/dropbox.list \
 	&& apt-get -qqy update \
 	&& apt-get -qqy install dropbox \
 	# Perform image clean up.
